@@ -1,5 +1,7 @@
+import { dbConnection } from "@/src/db/dbConnection";
 import { NextRequest, NextResponse } from "next/server";
 
+dbConnection();
 export async function GET(request: NextRequest){
   try {
     const response = NextResponse.json({

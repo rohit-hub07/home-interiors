@@ -2,6 +2,7 @@ import User from "@/src/model/user.model";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { dbConnection } from "@/src/db/dbConnection";
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ interface loginType {
   password: string,
 }
 
+dbConnection()
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
