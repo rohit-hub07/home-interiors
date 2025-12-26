@@ -5,11 +5,21 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  imageUrl: {
+  mediaUrl: {
     type: String,
     required: true,
   },
-},{timestamps: true});
+  mediaType: {
+    type: String,
+    enum: ["image", "video"],
+    required: true,
+  },
+  category: {
+    type: String,
+    enum: ["kitchen", "bedroom", "living", "bathroom"],
+    required: true,
+  },
+}, { timestamps: true });
 
 const Post = mongoose.models.posts || mongoose.model("posts", postSchema);
 
