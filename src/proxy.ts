@@ -30,6 +30,7 @@ interface MiddlewareConfig {
 export const config: MiddlewareConfig = {
   matcher: [
     "/api/post/upload",
+    "/api/post/upload-media",
     "/api/post/delete/:path*",
     "/api/post/edit/:path*",
     "/upload-design",
