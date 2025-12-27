@@ -31,6 +31,8 @@ export const config: MiddlewareConfig = {
   matcher: [
     "/api/post/upload",
     "/api/post/delete/:path*",
-    "/api/post/edit/:path*"
+    "/api/post/edit/:path*",
+    "/upload-design",
+    "/delete/:path*"
   ]
 }

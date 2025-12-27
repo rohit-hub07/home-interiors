@@ -29,10 +29,10 @@ const page = () => {
           className="mb-6 md:mb-8 inline-flex items-center gap-2 bg-white px-4 sm:px-5 py-2 sm:py-3 rounded-full shadow-sm border border-amber-200 hover:shadow-md transition-shadow"
         >
           <span className="text-gray-700 font-medium text-sm sm:text-base">
-            🎉 Limited Time Offer: 20% Off All Design Packages
+            🎉 Limited Time Offer: Flat 25% off on Modular Interior
           </span>
           <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 flex-shrink-0"
+            className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 shrink-0"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -64,7 +64,7 @@ const page = () => {
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto px-4">
           <Link
             href="/consultation"
-            className="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:from-amber-600 hover:to-orange-700 transition-all shadow-lg text-center"
+            className="w-full sm:w-auto bg-linear-to-r from-amber-500 to-orange-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:from-amber-600 hover:to-orange-700 transition-all shadow-lg text-center"
           >
             Get Free Consultation
           </Link>

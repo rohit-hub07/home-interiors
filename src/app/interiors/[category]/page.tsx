@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'next/navigation'
+import axios from 'axios'
 
 interface Post {
   _id: string
@@ -17,6 +18,7 @@ export default function Page() {
   const params = useParams<{ category?: string }>()
   const searchParams = useSearchParams()
   const category = params?.category ?? searchParams.get('category') ?? ''
+  // console.log("catagory: ", category);
 
   const [posts, setPosts] = useState<Post[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -27,10 +29,9 @@ export default function Page() {
     setLoading(true)
       ; (async () => {
         try {
-          const res = await fetch(`/api/post/designs/${encodeURIComponent(category)}`, { cache: 'no-store' })
-          if (!res.ok) throw new Error(`Failed to fetch designs: ${res.status}`)
-          const data = await res.json()
-          setPosts(data?.posts ?? [])
+          const res = await axios.get(`/api/post/designs/${encodeURIComponent(category)}`)
+          console.log("res inside of interior: ", res)
+          setPosts(res.data?.posts ?? [])
           setError(null)
         } catch (e: any) {
           setError(e.message)
@@ -97,9 +98,6 @@ export default function Page() {
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-800 text-lg">{post.title}</h3>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {new Date(post.createdAt).toLocaleDateString()}
-                    </p>
                   </div>
                 </div>
               ))}
@@ -133,9 +131,6 @@ export default function Page() {
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-800 text-lg">{post.title}</h3>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {new Date(post.createdAt).toLocaleDateString()}
-                    </p>
                   </div>
                 </div>
               ))}

@@ -4,9 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 dbConnection();
-export async function GET(req: NextRequest, { params }: { params: { category: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ category: string }> }) {
   try {
-    const category = await params.category;
+    const { category } = await params;
     console.log("category: ", category);
     if (!category) return NextResponse.json({ message: "Category is missing!", success: false }, { status: 404 });
 

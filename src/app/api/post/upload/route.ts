@@ -6,6 +6,10 @@ dbConnection();
 export async function POST(request: NextRequest) {
   try {
     const { title, mediaUrl, mediaType, category } = await request.json();
+    console.log("title: ",title);
+    console.log("mediaUrl: ",mediaUrl);
+    console.log("mediaType: ",mediaType);
+    console.log("category: ",category);
 
     if (!title || !mediaUrl || !mediaType || !category) {
       return NextResponse.json(
