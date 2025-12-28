@@ -13,38 +13,24 @@ const page = () => {
       const timeout = setTimeout(() => {
         setDisplayedText(prev => prev + fullText[currentIndex])
         setCurrentIndex(prev => prev + 1)
-      }, 50) // Adjust speed here (lower = faster)
+      }, 50)
 
       return () => clearTimeout(timeout)
     }
   }, [currentIndex])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-white">
+    <div className="min-h-screen bg-linear-to-b from-amber-50 via-orange-50 to-white">
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 pt-12 md:pt-20 pb-16 md:pb-32">
         {/* Banner */}
-        <Link
-          href="/offers"
+        <p
           className="mb-6 md:mb-8 inline-flex items-center gap-2 bg-white px-4 sm:px-5 py-2 sm:py-3 rounded-full shadow-sm border border-amber-200 hover:shadow-md transition-shadow"
         >
           <span className="text-gray-700 font-medium text-sm sm:text-base">
             🎉 Limited Time Offer: Flat 25% off on Modular Interior
           </span>
-          <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </Link>
+        </p>
 
         {/* Main Heading with Typewriter Effect */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center text-gray-900 mb-4 md:mb-6 max-w-5xl leading-tight min-h-30 sm:min-h-35 md:min-h-45 lg:min-h-50 px-2">
@@ -69,7 +55,7 @@ const page = () => {
             Get Free Consultation
           </Link>
           <Link
-            href="/gallery"
+            href="interiors/gallery"
             className="w-full sm:w-auto bg-white text-gray-700 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-50 transition-colors border border-gray-200 flex items-center justify-center gap-2"
           >
             View Gallery

@@ -31,7 +31,6 @@ const Page = () => {
     setError('')
 
     try {
-      // Add your login API call here
        const res = await axios.post("/api/user/login", formData);
        if(res.data.success){
         toast.success(res.data.message);

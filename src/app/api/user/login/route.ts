@@ -24,12 +24,14 @@ export async function POST(request: NextRequest) {
     }
 
     const user = await User.findOne({email});
+
     if(!user){
       return NextResponse.json({
         message: "User doesn't exist!",
         success: false,
       },{status: 404})
     }
+    
     const tokenData = {
       id: user._id,
       email: user.email
