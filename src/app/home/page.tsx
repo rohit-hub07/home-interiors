@@ -49,30 +49,13 @@ const page = () => {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto px-4">
           <Link
-            href="/consultation"
+            href="https://wa.me/919864919978" target="_blank"
+            rel="noopener noreferrer"
             className="w-full sm:w-auto bg-linear-to-r from-amber-500 to-orange-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:from-amber-600 hover:to-orange-700 transition-all shadow-lg text-center"
           >
             Get Free Consultation
           </Link>
-          <Link
-            href="interiors/gallery"
-            className="w-full sm:w-auto bg-white text-gray-700 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-50 transition-colors border border-gray-200 flex items-center justify-center gap-2"
-          >
-            View Gallery
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </Link>
+          
         </div>
       </div>
     </div>
