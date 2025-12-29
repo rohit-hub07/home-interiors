@@ -44,7 +44,7 @@ const Home4 = () => {
       <div className="row g-4 justify-content-evenly">
         <div className="col-12 col-md-4">
           <img
-            src={img1.src}
+            src="/colours-kitchen-img/colours-kitchen.jpg"
             className="img-fluid rounded shadow-sm"
             alt="Stylish Dining Hall Design"
           />
@@ -52,7 +52,7 @@ const Home4 = () => {
         </div>
         <div className="col-12 col-md-4">
           <img
-            src={img2.src}
+            src="/colours-kitchen-img/colours-kitchen1.jpg"
             className="img-fluid rounded shadow-sm"
             alt="Stylish Bedroom Design"
           />
@@ -60,7 +60,7 @@ const Home4 = () => {
         </div>
         <div className="col-12 col-md-4">
           <img
-            src={img3.src}
+            src="/colours-kitchen-img/colours-kitchen2.jpg"
             className="img-fluid rounded shadow-sm"
             alt="A Minimal with Blue Toned Bedroom"
           />
@@ -76,7 +76,7 @@ const Home4 = () => {
       <div className="row g-4 justify-content-evenly">
         <div className="col-12 col-md-4">
           <img
-            src={img1}
+            src="/colours-kitchen-img/colours-kitchen.jpg"
             className="img-fluid rounded shadow-sm"
             alt="Stylish Dining Hall Design"
           />
@@ -84,7 +84,7 @@ const Home4 = () => {
         </div>
         <div className="col-12 col-md-4">
           <img
-            src={img2}
+            src="/colours-kitchen-img/colours-kitchen1.jpg"
             className="img-fluid rounded shadow-sm"
             alt="Stylish Bedroom Design"
           />
@@ -92,7 +92,7 @@ const Home4 = () => {
         </div>
         <div className="col-12 col-md-4">
           <img
-            src={img3}
+            src="/colours-kitchen-img/colours-kitchen2.jpg"
             className="img-fluid rounded shadow-sm"
             alt="A Minimal with Blue Toned Bedroom"
           />
