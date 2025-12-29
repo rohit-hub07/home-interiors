@@ -1,20 +1,18 @@
-"use client";
+import Home2 from "./home2";
+import Home3 from "./home3";
+import Home4a from "./kitchen-design";
+import Home4b from "./bedroom-interiors";
+import Home4c from "./living-room-interiors";
+import Home5 from "./home5";
+import Home6 from "./home6";
+import Home7 from "./home7";
+import Home8 from "./home8";
+import HomeBanner from "./baneer";
 
-import Home2 from "@/src/Components/home2";
-import Home3 from "@/src/Components/home3";
-import Home4a from "@/src/Components/kitchen-design";
-import Home4b from "@/src/Components/bedroom-interiors";
-import Home4c from "@/src/Components/living-room-interiors";
-import Home5 from "@/src/Components/home5";
-import Home6 from "@/src/Components/home6";
-import Home7 from "@/src/Components/home7";
-import Home8 from "@/src/Components/home8";
-import HomeBanner from "@/src/Components/baneer";
+// import './hero.css';
+// import { Card } from 'react-bootstrap';
 
-
-function Home() {
-
-
+const Home = () => {
   return (
     <div>
       {/* <div
@@ -39,6 +37,6 @@ function Home() {
       <Home8 />
     </div>
   );
-}
+};
 
-export default Home
+export default Home;

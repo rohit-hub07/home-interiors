@@ -1,0 +1,109 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
+// Slide Data — Image + Text
+const slides = [
+  { img: "/img/Photo/img1.jpg", title: "Skirting Drawers To Utilise The Dead Space" },
+  { img: "/img/Photo/img2.jpg", title: "A TV Unit With Hidden Storage Behind" },
+  { img: "/img/Photo/img3.jpg", title: "A Magic Pull-Out To Store Your Daily Utensils" },
+  { img: "/hero.jpg", title: "Maximise Your Modular Kitchen Storage" },
+];
+
+const Home3 = () => {
+  const [startIndex, setStartIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  // Handle responsive view
+  useEffect(() => {
+    const updateView = () => {
+      if (window.innerWidth < 768) setVisibleCount(1);
+      else setVisibleCount(3);
+    };
+
+    updateView();
+    window.addEventListener("resize", updateView);
+    return () => window.removeEventListener("resize", updateView);
+  }, []);
+
+  // Next / Prev
+  const next = () =>
+    setStartIndex((prev) => (prev + 1) % slides.length);
+
+  const prev = () =>
+    setStartIndex((prev) => (prev - 1 + slides.length) % slides.length);
+
+  // Compute visible cards
+  const visibleSlides = Array.from({ length: visibleCount }).map(
+    (_, i) => slides[(startIndex + i) % slides.length]
+  );
+
+  return (
+    <div className="bg-gray-100 py-12">
+      <div className="max-w-7xl mx-auto px-4 text-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8">Smart Modular Kitchen Designs</h2>
+        <div className="relative">
+
+          {/* Left Button */}
+          <button
+            onClick={prev}
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg items-center justify-center text-gray-600"
+          >
+            ❮
+          </button>
+
+          {/* Slider */}
+          <div className="flex justify-center gap-4 md:gap-6">
+            {visibleSlides.map((item, i) => (
+              <div
+                key={i}
+                className={`${visibleCount === 1 ? 'w-[90%]' : 'w-full md:w-1/3'} cursor-pointer`}
+              >
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-full h-56 object-cover rounded-xl shadow-md"
+                />
+
+                {/* Text Under Image */}
+                <p className="mt-3 font-semibold text-sm text-gray-700">
+                  {item.title}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Right Button */}
+          <button
+            onClick={next}
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg items-center justify-center text-gray-600"
+          >
+            ❯
+          </button>
+        </div>
+
+        {/* Dots Only in Mobile */}
+        {visibleCount === 1 && (
+          <div className="flex justify-center mt-4 gap-2">
+            {slides.map((_, i) => (
+              <div
+                key={i}
+                onClick={() => setStartIndex(i)}
+                className={`rounded-full cursor-pointer transition-all ${i === startIndex ? 'w-3 h-3 bg-red-600' : 'w-2.5 h-2.5 bg-gray-300'
+                  }`}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="mt-8">
+          <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-colors duration-200">
+            Book Your Dream Kitchen
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Home3
