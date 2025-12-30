@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 // Slide Data — Image + Text
 const slides = [
@@ -14,6 +15,8 @@ const slides = [
 export default function LivingRoomInteriors() {
   const [startIndex, setStartIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   useEffect(() => {
     const updateView = () => {
@@ -28,6 +31,13 @@ export default function LivingRoomInteriors() {
   const next = () => setStartIndex((prev) => (prev + 1) % slides.length);
   const prev = () => setStartIndex((prev) => (prev - 1 + slides.length) % slides.length);
 
+  const handleTouchStart = (e: React.TouchEvent) => setTouchStart(e.targetTouches[0].clientX);
+  const handleTouchMove = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX);
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 75) next();
+    if (touchStart - touchEnd < -75) prev();
+  };
+
   const visibleSlides = Array.from({ length: visibleCount }).map(
     (_, i) => slides[(startIndex + i) % slides.length]
   );
@@ -37,10 +47,10 @@ export default function LivingRoomInteriors() {
       <div className="max-w-7xl mx-auto px-4 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8">Living Room Interiors For A Fabulous First Impression</h2>
         <div className="relative">
-          <button onClick={prev} className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg items-center justify-center text-gray-600">
+          <button onClick={prev} className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg flex items-center justify-center text-gray-600">
             ❮
           </button>
-          <div className="flex justify-center gap-4 md:gap-6">
+          <div className="flex justify-center gap-4 md:gap-6" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
             {visibleSlides.map((item, i) => (
               <div key={i} className={`${visibleCount === 1 ? 'w-[90%]' : 'w-full md:w-1/3'} cursor-pointer`}>
                 <img src={item.img} alt={item.title} className="w-full h-56 object-cover rounded-xl shadow-md" />
@@ -48,7 +58,7 @@ export default function LivingRoomInteriors() {
               </div>
             ))}
           </div>
-          <button onClick={next} className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg items-center justify-center text-gray-600">
+          <button onClick={next} className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg flex items-center justify-center text-gray-600">
             ❯
           </button>
         </div>
@@ -60,7 +70,14 @@ export default function LivingRoomInteriors() {
           </div>
         )}
         <div className="mt-8">
-          <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-colors duration-200">Book A Free Consultation</button>
+          <Link
+            href="https://wa.me/919864919978"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#DC3545] hover:bg-[#C82333] text-white font-bold text-lg py-4 px-10 rounded-lg shadow-lg transition-colors duration-200 inline-block text-center"
+          >
+            Book A Free Consultation
+          </Link>
         </div>
       </div>
     </div>

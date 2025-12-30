@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { dbConnection } from "@/src/db/dbConnection";
+import bcrypt from "bcryptjs";
 
 dotenv.config();
 
@@ -30,6 +31,14 @@ export async function POST(request: NextRequest) {
         message: "User doesn't exist!",
         success: false,
       },{status: 404})
+    }
+
+    const isMatched = await bcrypt.compare(password,user.password);
+    if(!isMatched){
+      return NextResponse.json({
+        message: "Email or password is incorrect!",
+        success: false,
+      },{status: 403})
     }
     
     const tokenData = {

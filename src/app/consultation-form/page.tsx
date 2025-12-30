@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const ConsultationForm = () => {
   const [bhk, setBhk] = useState("");
@@ -96,10 +97,17 @@ const ConsultationForm = () => {
           <span className="ms-2 fs-4 text-success">💬</span>
         </div>
 
-        
-        <button className="btn btn-danger mt-4 w-100 fw-bold">
+
+        <Link to="https://wa.me/919864919978"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg font-medium text-base transition-colors flex items-center space-x-2"
+          >
           Book a Free Consultation
-        </button>
+
+          {/* <button className="btn btn-danger mt-4 w-100 fw-bold"> */}
+          {/* </button> */}
+        </Link>
 
         <p className="text-center mt-2" style={{ fontSize: "12px" }}>
           By submitting, you consent to our{" "}

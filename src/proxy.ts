@@ -6,12 +6,10 @@ export function proxy(request: NextRequest) {
   
   console.log("path inside of middleware: ", path);
 
-  // Check if user is trying to access protected routes
   const protectedPath = path.includes("/upload") || path.includes("/delete") || path.includes("/edit");
 
   const token = request.cookies.get('token')?.value || '';
 
-  // If accessing protected route without token, redirect to home
   if (protectedPath && !token) {
     return NextResponse.json({
       message: "You are not allowed to access this route!",
@@ -19,7 +17,6 @@ export function proxy(request: NextRequest) {
     },{status: 403});
   }
 
-  // Allow the request to continue
   return NextResponse.next();
 }
 

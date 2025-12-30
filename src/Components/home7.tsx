@@ -13,6 +13,8 @@ const images = [
 export default function Home7() {
   const [startIndex, setStartIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   useEffect(() => {
     const updateView = () => {
@@ -27,6 +29,13 @@ export default function Home7() {
   const next = () => setStartIndex((prev) => (prev + 1) % images.length);
   const prev = () => setStartIndex((prev) => (prev - 1 + images.length) % images.length);
 
+  const handleTouchStart = (e: React.TouchEvent) => setTouchStart(e.targetTouches[0].clientX);
+  const handleTouchMove = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX);
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 75) next();
+    if (touchStart - touchEnd < -75) prev();
+  };
+
   const visibleImages = Array.from({ length: visibleCount }).map(
     (_, i) => images[(startIndex + i) % images.length]
   );
@@ -40,17 +49,17 @@ export default function Home7() {
         <p className="text-gray-500 mb-8">1 Cities | 10 Experience Centres</p>
 
         <div className="relative">
-          <button onClick={prev} className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg items-center justify-center text-gray-600">
+          <button onClick={prev} className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg flex items-center justify-center text-gray-600">
             ❮
           </button>
-          <div className="flex justify-center gap-4 md:gap-6">
+          <div className="flex justify-center gap-4 md:gap-6" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
             {visibleImages.map((src, i) => (
               <div key={i} className={visibleCount === 1 ? 'w-[90%]' : 'w-full md:w-1/3'}>
                 <img src={src} alt="Design Possibility" className="w-full h-56 object-cover rounded-xl shadow-md" />
               </div>
             ))}
           </div>
-          <button onClick={next} className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg items-center justify-center text-gray-600">
+          <button onClick={next} className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg flex items-center justify-center text-gray-600">
             ❯
           </button>
         </div>

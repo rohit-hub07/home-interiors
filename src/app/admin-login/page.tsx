@@ -38,7 +38,8 @@ const Page = () => {
        refreshedUser();
        router.push("/home");
     } catch (err: any) {
-      setError(err.message || 'An error occurred during login')
+      console.log(err);
+      setError(err.response.data.message || 'An error occurred during login')
     } finally {
       setIsLoading(false)
     }

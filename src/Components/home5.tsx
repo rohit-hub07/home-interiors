@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Home5 = () => {
   return (
     <div className="bg-white max-w-full mx-auto px-4 py-12">
@@ -85,9 +87,14 @@ const Home5 = () => {
         </div>
       </div>
       <div className="text-center mt-8">
-        <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-colors duration-200">
+        <Link
+          href="https://wa.me/919864919978"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-[#DC3545] hover:bg-[#C82333] text-white font-bold text-lg py-4 px-10 rounded-lg shadow-lg transition-colors duration-200 inline-block text-center"
+        >
           Get Free Estimate
-        </button>
+        </Link>
       </div>
     </div>
   );

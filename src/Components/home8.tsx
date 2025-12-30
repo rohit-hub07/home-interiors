@@ -1,3 +1,4 @@
+import Link from "next/link"
 
 const Home10 = () => {
   return (
@@ -5,9 +6,14 @@ const Home10 = () => {
       <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">Ready To Design Your Dream Home ?</h2>
       <p className="text-gray-700 mb-6">Book A Free Design Consultation With Our Expert Designers</p>
       <div className="max-w-7xl mx-auto px-4">
-        <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-colors duration-200">
-          Get Free Quote
-        </button>
+        <Link
+              href="https://wa.me/919864919978"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#DC3545] hover:bg-[#C82333] text-white font-bold text-lg py-4 px-10 rounded-lg shadow-lg transition-colors duration-200 mb-4 w-full md:w-auto inline-block text-center"
+            >
+              Get Free Quote
+            </Link>
       </div>
     </div>
   )

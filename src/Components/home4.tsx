@@ -1,9 +1,4 @@
-import { Link } from "react-router-dom"
-
-
-import img1 from "/colours-kitchen-img/colours-kitchen.jpg"
-import img2 from "/colours-kitchen-img/colours-kitchen1.jpg"
-import img3 from "/colours-kitchen-img/colours-kitchen2.jpg"
+import Link from "next/link"
 
 const Home4 = () => {
   return (
@@ -100,9 +95,14 @@ const Home4 = () => {
         </div>
       </div>
       <div className="container mt-4">
-        <button className="btn btn-danger  shadow-sm" data-bs-dismiss="offcanvas">
-          Book A Free Consultation
-        </button>
+        <Link
+              href="https://wa.me/919864919978"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#DC3545] hover:bg-[#C82333] text-white font-bold text-lg py-4 px-10 rounded-lg shadow-lg transition-colors duration-200 mb-4 w-full md:w-auto inline-block text-center"
+            >
+              Book A FREE Consultation 👋
+            </Link>
       </div>
     </div>
   )

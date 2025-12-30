@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 // Slide Data — Image + Text
 const slides = [
@@ -13,6 +14,8 @@ const slides = [
 const Home3 = () => {
   const [startIndex, setStartIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   // Handle responsive view
   useEffect(() => {
@@ -33,6 +36,24 @@ const Home3 = () => {
   const prev = () =>
     setStartIndex((prev) => (prev - 1 + slides.length) % slides.length);
 
+  // Touch handlers for swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 75) {
+      next();
+    }
+    if (touchStart - touchEnd < -75) {
+      prev();
+    }
+  };
+
   // Compute visible cards
   const visibleSlides = Array.from({ length: visibleCount }).map(
     (_, i) => slides[(startIndex + i) % slides.length]
@@ -47,13 +68,18 @@ const Home3 = () => {
           {/* Left Button */}
           <button
             onClick={prev}
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg items-center justify-center text-gray-600"
+            className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg flex items-center justify-center text-gray-600"
           >
             ❮
           </button>
 
           {/* Slider */}
-          <div className="flex justify-center gap-4 md:gap-6">
+          <div
+            className="flex justify-center gap-4 md:gap-6"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {visibleSlides.map((item, i) => (
               <div
                 key={i}
@@ -76,7 +102,7 @@ const Home3 = () => {
           {/* Right Button */}
           <button
             onClick={next}
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg items-center justify-center text-gray-600"
+            className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 rounded-full w-10 h-10 shadow-lg flex items-center justify-center text-gray-600"
           >
             ❯
           </button>
@@ -97,9 +123,14 @@ const Home3 = () => {
         )}
 
         <div className="mt-8">
-          <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-colors duration-200">
+          <Link
+            href="https://wa.me/919864919978"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#DC3545] hover:bg-[#C82333] text-white font-bold text-lg py-4 px-10 rounded-lg shadow-lg transition-colors duration-200 inline-block text-center"
+          >
             Book Your Dream Kitchen
-          </button>
+          </Link>
         </div>
       </div>
     </div>
