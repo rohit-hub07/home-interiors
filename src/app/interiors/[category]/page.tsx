@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'next/navigation'
 import axios from 'axios'
+import { useAuth } from '@/src/context/userContext'
+import Link from 'next/link'
 
 interface Post {
   _id: string
@@ -24,6 +26,9 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const { userId, refreshedUser } = useAuth();
+
+  refreshedUser();
   useEffect(() => {
     if (!category) return
     setLoading(true)
@@ -99,9 +104,15 @@ export default function Page() {
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-800 text-lg">{post.title}</h3>
                   </div>
+                  {userId && (
+                    <div className='flex justify-end-safe'>
+                      <Link href={`/edit/${post._id}`} className="text-white bg-linear-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-linear-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5 rounded-3xl m-2">Edit Post</Link>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
+
           </section>
         )}
 
@@ -132,6 +143,13 @@ export default function Page() {
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-800 text-lg">{post.title}</h3>
                   </div>
+
+                  {userId && (
+                    <div className='flex justify-end-safe'>
+                      <Link href={`/edit/${post._id}`} className="text-white bg-linear-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-linear-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5 rounded-3xl m-2">Edit Post</Link>
+                    </div>
+                  )}
+
                 </div>
               ))}
             </div>

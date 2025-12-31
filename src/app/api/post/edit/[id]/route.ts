@@ -8,6 +8,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params;
     const reqBody = await request.json();
+    console.log("reqBody inside of the edit route: ", reqBody);
     const { title, imageUrl } = reqBody;
 
     const post = await Post.findById(id);

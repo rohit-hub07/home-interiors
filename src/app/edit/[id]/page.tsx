@@ -1,15 +1,23 @@
 'use client'
 
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import Link from 'next/link'
+import { usePost } from '@/src/context/postContext'
 
-const CATEGORIES = ['kitchen', 'bedroom', 'living', 'bathroom','gallery'] as const
+const CATEGORIES = ['kitchen', 'bedroom', 'living', 'bathroom'] as const
 
 const Page = () => {
+  const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const [formData, setFormData] = useState({
+    title: '',
+    mediaUrl: '',
+    mediaType: 'image' as 'image' | 'video',
+    category: '' as string
+  })
+  const [originalData, setOriginalData] = useState({
     title: '',
     mediaUrl: '',
     mediaType: 'image' as 'image' | 'video',
@@ -22,6 +30,8 @@ const Page = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
+  const { getPost, editPost } = usePost();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
@@ -30,6 +40,27 @@ const Page = () => {
     setError('')
     setSuccess('')
   }
+
+  //get current post data
+  const getPostData = async () => {
+    const response = await getPost(id);
+    console.log("response: ", response);
+    if (response.success) {
+      const postData = {
+        title: response.post.title,
+        mediaUrl: response.post.mediaUrl,
+        mediaType: response.post.mediaType,
+        category: response.post.category,
+      }
+      setFormData(postData)
+      setOriginalData(postData)
+      setPreviewUrl(response.post.mediaUrl)
+    }
+  }
+  // getPostData();
+  useEffect(() => {
+    getPostData();
+  }, [id])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -75,7 +106,6 @@ const Page = () => {
       console.log("response data inside of upload page: ", response.data);
 
       if (response.data.success) {
-        // Return the uploaded data instead of setting state
         return {
           mediaUrl: response.data.mediaUrl,
           mediaType: response.data.mediaType
@@ -98,48 +128,64 @@ const Page = () => {
     setError('')
     setSuccess('')
 
-    // Validation
-    if (!formData.title || !formData.category || !selectedFile) {
-      setError('Please fill in all fields and select a file!')
+    const hasFormChanges =
+      formData.title !== originalData.title ||
+      formData.category !== originalData.category
+
+    const hasFileChange = selectedFile !== null
+
+    if (!hasFormChanges && !hasFileChange) {
+      setSuccess('No changes detected. Redirecting...')
+      setTimeout(() => {
+        router.push(`/interiors/${formData.category}`)
+      }, 1000)
+      setIsLoading(false)
+      return
+    }
+
+  
+    if (!formData.title || !formData.category) {
+      setError('Please fill in all required fields!')
       setIsLoading(false)
       return
     }
 
     try {
-      // First upload to Cloudinary
-      const uploadedData = await uploadToCloudinary()
-      if (!uploadedData) {
-        setIsLoading(false)
-        return
+      let updatedMediaUrl = formData.mediaUrl
+      let updatedMediaType = formData.mediaType
+
+      // If a new file was selected, upload it
+      if (selectedFile) {
+        const uploadedData = await uploadToCloudinary()
+        if (!uploadedData) {
+          setIsLoading(false)
+          return
+        }
+        updatedMediaUrl = uploadedData.mediaUrl
+        updatedMediaType = uploadedData.mediaType
       }
 
-      // Then create the post with the uploaded data
-      const response = await axios.post('/api/post/upload', {
+      // Update the post with the new data
+      const response = await editPost(id, {
         title: formData.title,
-        mediaUrl: uploadedData.mediaUrl,
-        mediaType: uploadedData.mediaType,
+        mediaUrl: updatedMediaUrl,
+        mediaType: updatedMediaType,
         category: formData.category
       })
 
-      const category = formData.category;
+      const category = formData.category
 
-      if (response.data.success) {
-        setSuccess('Design uploaded successfully!')
-        setFormData({
-          title: '',
-          mediaUrl: '',
-          mediaType: 'image',
-          category: ''
-        })
-        setSelectedFile(null)
-        setPreviewUrl('')
+      if (response.success) {
+        setSuccess('Design updated successfully!')
 
         setTimeout(() => {
           router.push(`/interiors/${category}`)
         }, 2000)
+      } else {
+        setError(response.message || 'Failed to update design')
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to upload design')
+      setError(err.response?.data?.message || 'Failed to update design')
     } finally {
       setIsLoading(false)
     }
@@ -149,7 +195,7 @@ const Page = () => {
     <div className="min-h-screen bg-linear-to-b from-amber-50 via-orange-50 to-white py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mt-6 mb-2">Upload Design</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mt-6 mb-2">Edit Design</h1>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-amber-100">
@@ -195,7 +241,7 @@ const Page = () => {
             {/* File Upload */}
             <div>
               <label htmlFor="file" className="block text-sm font-semibold text-gray-700 mb-2">
-                Upload File (Image or Video) <span className="text-red-500">*</span>
+                Upload New File (Image or Video) <span className="text-gray-400">(Optional)</span>
               </label>
               <div className="relative">
                 <input
@@ -203,7 +249,6 @@ const Page = () => {
                   id="file"
                   accept="image/*,video/*"
                   onChange={handleFileChange}
-                  required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition-all text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-linear-to-r file:from-amber-500 file:to-orange-600 file:text-white hover:file:from-amber-600 hover:file:to-orange-700 file:cursor-pointer"
                 />
               </div>
@@ -220,7 +265,9 @@ const Page = () => {
             {/* Preview Section */}
             {previewUrl && (
               <div className="border border-amber-200 rounded-lg p-4 bg-amber-50">
-                <p className="text-sm font-semibold text-gray-700 mb-2">Preview:</p>
+                <p className="text-sm font-semibold text-gray-700 mb-2">
+                  {selectedFile ? 'New Preview:' : 'Current Media:'}
+                </p>
                 {formData.mediaType === 'image' ? (
                   <img
                     src={previewUrl}
@@ -269,14 +316,14 @@ const Page = () => {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  {isUploading ? 'Uploading to Cloudinary...' : 'Creating Post...'}
+                  {isUploading ? 'Uploading to Cloudinary...' : 'Updating Design...'}
                 </>
               ) : (
                 <>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
-                  Upload Design
+                  Update Design
                 </>
               )}
             </button>

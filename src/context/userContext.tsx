@@ -9,7 +9,7 @@ interface authContextType {
   refreshedUser: () => Promise<void>,
   loading: Boolean
 }
-
+  
 
 const AuthContext = createContext<authContextType | null>(null);
 

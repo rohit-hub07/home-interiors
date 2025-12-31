@@ -6,7 +6,7 @@ export function proxy(request: NextRequest) {
   
   console.log("path inside of middleware: ", path);
 
-  const protectedPath = path.includes("/upload") || path.includes("/delete") || path.includes("/edit");
+  const protectedPath = path.includes("/upload") || path.includes("/delete") || path.includes("/edit") || path.includes("/update");
 
   const token = request.cookies.get('token')?.value || '';
 
@@ -31,6 +31,7 @@ export const config: MiddlewareConfig = {
     "/api/post/delete/:path*",
     "/api/post/edit/:path*",
     "/upload-design",
-    "/delete/:path*"
+    "/delete/:path*",
+    "/edit/:path*"
   ]
 }
