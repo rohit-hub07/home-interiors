@@ -9,8 +9,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params;
     const reqBody = await request.json();
     console.log("reqBody inside of the edit route: ", reqBody);
-    const { title, imageUrl } = reqBody;
-
+    const { title, mediaUrl, mediaType, category } = reqBody;
+    
     const post = await Post.findById(id);
     if (!post) {
       return NextResponse.json({
@@ -22,8 +22,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const updatedPost = await Post.findByIdAndUpdate(
       id,
       {
-        title: title || post.title,
-        imageUrl: imageUrl || post.imageUrl,
+        title, mediaUrl, mediaType, category
       },
       { new: true }
     );

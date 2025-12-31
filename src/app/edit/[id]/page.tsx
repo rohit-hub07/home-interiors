@@ -135,7 +135,7 @@ const Page = () => {
     const hasFileChange = selectedFile !== null
 
     if (!hasFormChanges && !hasFileChange) {
-      setSuccess('No changes detected. Redirecting...')
+      setSuccess('No changes. Redirecting...')
       setTimeout(() => {
         router.push(`/interiors/${formData.category}`)
       }, 1000)
@@ -164,6 +164,9 @@ const Page = () => {
         updatedMediaUrl = uploadedData.mediaUrl
         updatedMediaType = uploadedData.mediaType
       }
+
+      console.log("Updated media url: ", updatedMediaUrl);
+      console.log("updated media type: ", updatedMediaType);
 
       // Update the post with the new data
       const response = await editPost(id, {

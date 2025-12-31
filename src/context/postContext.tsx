@@ -48,6 +48,7 @@ export const PostProvider = ({ children }: { children: React.ReactNode }) => {
 
   const editPost = async (id: string, data: dataType): Promise<ApiResponse> => {
     try {
+      console.log("Data inside of editPost: ", data);
       const res = await axios.put(`/api/post/edit/${id}`, data)
       return {
         success: res.data.success,
