@@ -6,7 +6,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import { usePost } from '@/src/context/postContext'
 
-const CATEGORIES = ['kitchen', 'bedroom', 'living', 'bathroom'] as const
+const CATEGORIES = ['kitchen', 'bedroom', 'living', 'bathroom','gallery'] as const
 
 const Page = () => {
   const { id } = useParams<{ id: string }>()
