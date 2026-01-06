@@ -114,7 +114,11 @@ export default function BedRoomInteriors() {
         const newSlides = [...slides];
         newSlides[previewIndex].img = data.mediaUrl;
         setSlides(newSlides);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(newSlides));
+        await fetch(`/api/slider/${COMPONENT_NAME}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slides: newSlides })
+        });
         cancelPreview();
       }
     } catch (error) {
@@ -131,22 +135,27 @@ export default function BedRoomInteriors() {
     setSelectedFile(null);
   };
 
-  const handleTitleChange = (index: number, newTitle: string) => {
+  const handleTitleChange = async (index: number, newTitle: string) => {
     const newSlides = [...slides];
     newSlides[index].title = newTitle;
     setSlides(newSlides);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newSlides));
+    await fetch(`/api/slider/${COMPONENT_NAME}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slides: newSlides })
+    });
   };
 
-  const resetToDefault = () => {
-    const savedSlides = localStorage.getItem(STORAGE_KEY);
-    if (savedSlides) {
-      try {
-        setSlides(JSON.parse(savedSlides));
-      } catch (e) {
+  const resetToDefault = async () => {
+    try {
+      const response = await fetch(`/api/slider/${COMPONENT_NAME}`);
+      const data = await response.json();
+      if (data.success && data.data) {
+        setSlides(data.data);
+      } else {
         setSlides(defaultSlides);
       }
-    } else {
+    } catch (error) {
       setSlides(defaultSlides);
     }
     setIsEditing(false);

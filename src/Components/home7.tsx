@@ -109,7 +109,11 @@ export default function Home7() {
         const newImages = [...images];
         newImages[previewIndex] = data.mediaUrl;
         setImages(newImages);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(newImages));
+        await fetch(`/api/slider/${COMPONENT_NAME}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slides: newImages })
+        });
         cancelPreview();
       }
     } catch (error) {
@@ -126,16 +130,17 @@ export default function Home7() {
     setSelectedFile(null);
   };
 
-  const resetToDefault = () => {
-    const savedImages = localStorage.getItem(STORAGE_KEY);
-    if (savedImages) {
-      try {
-        setImages(JSON.parse(savedImages));
-      } catch (e) {
-        setImages(defaultImages);
+  const resetToDefault = async () => {
+    try {
+      const response = await fetch(`/api/slider/${COMPONENT_NAME}`);
+      const data = await response.json();
+      if (data.success && data.data) {
+        setImages(data.data);
+      } else {
+        setImages(defaultImages.map((img) => ({ img, title: '' })));
       }
-    } else {
-      setImages(defaultImages);
+    } catch (error) {
+      setImages(defaultImages.map((img) => ({ img, title: '' })));
     }
     setIsEditing(false);
     cancelPreview();
