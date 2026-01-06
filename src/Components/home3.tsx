@@ -12,7 +12,7 @@ const defaultSlides = [
   { img: "/hero.jpg", title: "Maximise Your Modular Kitchen Storage" },
 ];
 
-const STORAGE_KEY = 'home3-slides';
+const COMPONENT_NAME = 'home3';
 
 const Home3 = () => {
   const [startIndex, setStartIndex] = useState(0);
@@ -29,16 +29,20 @@ const Home3 = () => {
 
   const { userId } = useAuth();
 
-  // Load saved slides from localStorage on mount
+  // Load slides from API on mount
   useEffect(() => {
-    const savedSlides = localStorage.getItem(STORAGE_KEY);
-    if (savedSlides) {
+    const fetchSlides = async () => {
       try {
-        setSlides(JSON.parse(savedSlides));
-      } catch (e) {
-        console.error('Error loading saved slides:', e);
+        const response = await fetch(`/api/slider/${COMPONENT_NAME}`);
+        const data = await response.json();
+        if (data.success && data.data) {
+          setSlides(data.data);
+        }
+      } catch (error) {
+        console.error('Error loading slides:', error);
       }
-    }
+    };
+    fetchSlides();
   }, []);
 
   // Handle responsive view
@@ -119,8 +123,14 @@ const Home3 = () => {
       if (data.mediaUrl) {
         const newSlides = [...slides];
         newSlides[previewIndex].img = data.mediaUrl;
-        setSlides(newSlides);        // Save to localStorage to persist the change
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(newSlides)); cancelPreview();
+        setSlides(newSlides);
+        // Save to API
+        await fetch(`/api/slider/${COMPONENT_NAME}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slides: newSlides })
+        });
+        cancelPreview();
       }
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -138,24 +148,29 @@ const Home3 = () => {
   };
 
   // Handle title change
-  const handleTitleChange = (index: number, newTitle: string) => {
+  const handleTitleChange = async (index: number, newTitle: string) => {
     const newSlides = [...slides];
     newSlides[index].title = newTitle;
     setSlides(newSlides);
-    // Save to localStorage
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newSlides));
+    // Save to API
+    await fetch(`/api/slider/${COMPONENT_NAME}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slides: newSlides })
+    });
   };
 
-  // Reset to saved slides (or original defaults if none saved)
-  const resetToDefault = () => {
-    const savedSlides = localStorage.getItem(STORAGE_KEY);
-    if (savedSlides) {
-      try {
-        setSlides(JSON.parse(savedSlides));
-      } catch (e) {
+  // Reset to current saved slides from API
+  const resetToDefault = async () => {
+    try {
+      const response = await fetch(`/api/slider/${COMPONENT_NAME}`);
+      const data = await response.json();
+      if (data.success && data.data) {
+        setSlides(data.data);
+      } else {
         setSlides(defaultSlides);
       }
-    } else {
+    } catch (error) {
       setSlides(defaultSlides);
     }
     setIsEditing(false);
@@ -165,22 +180,22 @@ const Home3 = () => {
   return (
     <div className="bg-gray-100 py-12">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 flex-1">Smart Modular Kitchen Designs</h2>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-8 gap-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 md:flex-1">Smart Modular Kitchen Designs</h2>
           {userId && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full md:w-auto">
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-colors text-sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 md:px-4 rounded-lg shadow transition-colors text-xs md:text-sm flex-1 md:flex-none"
               >
                 {isEditing ? "Done Editing" : "Change Images"}
               </button>
               {isEditing && (
                 <button
                   onClick={resetToDefault}
-                  className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-colors text-sm"
+                  className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-3 md:px-4 rounded-lg shadow transition-colors text-xs md:text-sm flex-1 md:flex-none whitespace-nowrap"
                 >
-                  Reset to Default
+                  Reset
                 </button>
               )}
             </div>
@@ -228,7 +243,7 @@ const Home3 = () => {
                             onChange={(e) => handleImageSelect(actualIndex, e)}
                             disabled={uploading}
                           />
-                          <div className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-lg shadow-lg transition-colors">
+                          <div className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1.5 px-3 md:py-2 md:px-4 rounded-lg shadow-lg transition-colors text-xs md:text-base">
                             Change Image
                           </div>
                         </label>

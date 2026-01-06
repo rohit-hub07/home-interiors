@@ -13,7 +13,7 @@ const defaultSlides = [
   { img: "/colours-kitchen-img/colours-kitchen4.jpg", title: "Smart Interior Solutions For Your Home" }
 ];
 
-const STORAGE_KEY = 'living-room-interiors-slides';
+const COMPONENT_NAME = 'living-room-interiors';
 
 export default function LivingRoomInteriors() {
   const [slides, setSlides] = useState(defaultSlides);
@@ -29,16 +29,20 @@ export default function LivingRoomInteriors() {
 
   const { userId } = useAuth();
 
-  // Load saved slides from localStorage
+  // Load slides from API
   useEffect(() => {
-    const savedSlides = localStorage.getItem(STORAGE_KEY);
-    if (savedSlides) {
+    const fetchSlides = async () => {
       try {
-        setSlides(JSON.parse(savedSlides));
-      } catch (e) {
-        console.error('Error loading saved slides:', e);
+        const response = await fetch(`/api/slider/${COMPONENT_NAME}`);
+        const data = await response.json();
+        if (data.success && data.data) {
+          setSlides(data.data);
+        }
+      } catch (error) {
+        console.error('Error loading slides:', error);
       }
-    }
+    };
+    fetchSlides();
   }, []);
 
   useEffect(() => {
@@ -145,22 +149,22 @@ export default function LivingRoomInteriors() {
   return (
     <div className="bg-gray-100 py-12">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 flex-1">Living Room Interiors For A Fabulous First Impression</h2>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-8 gap-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 md:flex-1">Living Room Interiors For A Fabulous First Impression</h2>
           {userId && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full md:w-auto">
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-colors text-sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 md:px-4 rounded-lg shadow transition-colors text-xs md:text-sm flex-1 md:flex-none"
               >
                 {isEditing ? "Done Editing" : "Change Images"}
               </button>
               {isEditing && (
                 <button
                   onClick={resetToDefault}
-                  className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-colors text-sm"
+                  className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-3 md:px-4 rounded-lg shadow transition-colors text-xs md:text-sm flex-1 md:flex-none whitespace-nowrap"
                 >
-                  Reset to Default
+                  Reset
                 </button>
               )}
             </div>

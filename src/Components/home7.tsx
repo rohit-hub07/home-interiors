@@ -11,10 +11,10 @@ const defaultImages = [
   "/colours-kitchen-img/colours-kitchen4.jpg"
 ];
 
-const STORAGE_KEY = 'home7-images';
+const COMPONENT_NAME = 'home7';
 
 export default function Home7() {
-  const [images, setImages] = useState(defaultImages);
+  const [images, setImages] = useState(defaultImages.map((img) => ({ img, title: '' })));
   const [startIndex, setStartIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
   const [touchStart, setTouchStart] = useState(0);
@@ -27,16 +27,20 @@ export default function Home7() {
 
   const { userId } = useAuth();
 
-  // Load saved images from localStorage
+  // Load slides from API
   useEffect(() => {
-    const savedImages = localStorage.getItem(STORAGE_KEY);
-    if (savedImages) {
+    const fetchSlides = async () => {
       try {
-        setImages(JSON.parse(savedImages));
-      } catch (e) {
-        console.error('Error loading saved images:', e);
+        const response = await fetch(`/api/slider/${COMPONENT_NAME}`);
+        const data = await response.json();
+        if (data.success && data.data) {
+          setImages(data.data);
+        }
+      } catch (error) {
+        console.error('Error loading slides:', error);
       }
-    }
+    };
+    fetchSlides();
   }, []);
 
   useEffect(() => {
@@ -69,6 +73,8 @@ export default function Home7() {
   const visibleImages = Array.from({ length: visibleCount }).map(
     (_, i) => images[(startIndex + i) % images.length]
   );
+
+  const visibleImageUrls = visibleImages.map(slide => slide.img);
 
   const goToSlide = (i: number) => setStartIndex(i);
 
@@ -138,20 +144,20 @@ export default function Home7() {
   return (
     <div className="bg-gray-100 py-12">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 flex-1">51040 Design Possibilities In Our Experience Centres</h2>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-2 gap-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 md:flex-1">51040 Design Possibilities In Our Experience Centres</h2>
           {userId && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full md:w-auto">
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-colors text-sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 md:px-4 rounded-lg shadow transition-colors text-xs md:text-sm flex-1 md:flex-none"
               >
                 {isEditing ? "Done Editing" : "Change Images"}
               </button>
               {isEditing && (
                 <button
                   onClick={resetToDefault}
-                  className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-colors text-sm"
+                  className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-3 md:px-4 rounded-lg shadow transition-colors text-xs md:text-sm flex-1 md:flex-none whitespace-nowrap"
                 >
                   Reset
                 </button>
@@ -166,11 +172,11 @@ export default function Home7() {
             ❮
           </button>
           <div className="flex justify-center gap-4 md:gap-6" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-            {visibleImages.map((src, i) => {
+            {visibleImages.map((slide, i) => {
               const actualIndex = (startIndex + i) % images.length;
               return (
                 <div key={i} className={`${visibleCount === 1 ? 'w-[90%]' : 'w-full md:w-1/3'} relative`}>
-                  <img src={src} alt="Design Possibility" className="w-full h-56 object-cover rounded-xl shadow-md" />
+                  <img src={slide.img} alt="Design Possibility" className="w-full h-56 object-cover rounded-xl shadow-md" />
 
                   {userId && isEditing && previewIndex !== actualIndex && (
                     <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center">
