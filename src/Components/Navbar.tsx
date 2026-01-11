@@ -110,9 +110,6 @@ export default function Navbar() {
               <Link href="/interiors/bathroom" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-orange-600 font-medium text-base">
                 Bathrooms
               </Link>
-              <Link href="/interiors/gallery" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-orange-600 font-medium text-base">
-                Gallery
-              </Link>
 
               {userId && (
                 <>
