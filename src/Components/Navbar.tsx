@@ -59,7 +59,7 @@ export default function Navbar() {
                 </>
               )}
               <Link
-                href="https://wa.me/919864919978"
+                href="https://wa.me/919993690392"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg font-medium text-base transition-colors flex items-center space-x-2"
@@ -125,7 +125,7 @@ export default function Navbar() {
 
               <div className="pt-2">
                 <Link
-                  href="https://wa.me/919864919978"
+                  href="https://wa.me/919993690392"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg font-medium text-base transition-colors flex items-center space-x-2"

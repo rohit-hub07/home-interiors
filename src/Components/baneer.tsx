@@ -42,7 +42,7 @@ const HalfOverlayImage: React.FC = () => {
             </div>
 
             <Link
-              href="https://wa.me/919864919978"
+              href="https://wa.me/919993690392"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[#DC3545] hover:bg-[#C82333] text-white font-bold text-lg py-4 px-10 rounded-lg shadow-lg transition-colors duration-200 mb-4 w-full md:w-auto inline-block text-center"

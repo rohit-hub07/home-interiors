@@ -299,7 +299,7 @@ export default function BedRoomInteriors() {
 
         <div className="mt-8">
           <Link
-            href="https://wa.me/919864919978"
+            href="https://wa.me/919993690392"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-[#DC3545] hover:bg-[#C82333] text-white font-bold text-lg py-4 px-10 rounded-lg shadow-lg transition-colors duration-200 inline-block text-center"
