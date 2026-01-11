@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import Link from 'next/link'
 
-const CATEGORIES = ['kitchen', 'bedroom', 'living', 'bathroom','gallery'] as const
+const CATEGORIES = ['kitchen', 'bedroom', 'living', 'bathroom',] as const
 
 const Page = () => {
   const router = useRouter()

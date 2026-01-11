@@ -16,7 +16,7 @@ const postSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["kitchen", "bedroom", "living", "bathroom", "gallery"],
+    enum: ["kitchen", "bedroom", "living", "bathroom"],
     required: true,
   },
 }, { timestamps: true });

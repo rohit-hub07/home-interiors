@@ -5,6 +5,8 @@ import { useParams, useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import { useAuth } from '@/src/context/userContext'
 import Link from 'next/link'
+import { usePost } from '@/src/context/postContext'
+import toast from 'react-hot-toast'
 
 interface Post {
   _id: string
@@ -25,9 +27,9 @@ export default function Page() {
   const [posts, setPosts] = useState<Post[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-
+  const [deleting, setDeleting] = useState(false);
   const { userId, refreshedUser } = useAuth();
-
+  const { deletePost } = usePost()
   refreshedUser();
   useEffect(() => {
     if (!category) return
@@ -46,10 +48,30 @@ export default function Page() {
       })()
   }, [category])
 
+  //delete post
+  const handleDeletePost = async (id: string) => {
+    try {
+      setDeleting(true);
+      console.log("id inside of handledelete: ", id);
+      const res = await deletePost(id);
+      console.log("response in handledelete: ", res);
+      if (res.success) {
+        setPosts(posts.filter(post => post._id != id));
+        toast.success(res.message);
+      }
+    } catch (e: any) {
+      toast.error('Error deleting the post');
+    } finally {
+      setDeleting(false);
+    }
+  }
+  
+
   // Separate images and videos
   const images = posts.filter(post => post.mediaType === 'image')
   const videos = posts.filter(post => post.mediaType === 'video')
-
+  
+  
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-8 py-8">
       <div className="max-w-7xl mx-auto">
@@ -107,7 +129,10 @@ export default function Page() {
                   {userId && (
                     <div className='flex justify-end-safe'>
                       <Link href={`/edit/${post._id}`} className="text-white bg-linear-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-linear-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5 rounded-3xl m-2">Edit Post</Link>
+
+                      <button onClick={() => handleDeletePost(post._id)} className="text-white cursor-pointer bg-linear-to-r from-red-500 via-red-500 to-red-500 hover:bg-linear-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5 rounded-3xl m-2">{deleting ? 'Deleting Post...' : 'Delete Post'}</button>
                     </div>
+
                   )}
                 </div>
               ))}
@@ -147,6 +172,8 @@ export default function Page() {
                   {userId && (
                     <div className='flex justify-end-safe'>
                       <Link href={`/edit/${post._id}`} className="text-white bg-linear-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-linear-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5 rounded-3xl m-2">Edit Post</Link>
+
+                      <button onClick={() => handleDeletePost(post._id)} className="text-white cursor-pointer bg-linear-to-r from-red-500 via-red-500 to-red-500 hover:bg-linear-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5 rounded-3xl m-2">{deleting ? 'Deleting Post...' : 'Delete Post'}</button>
                     </div>
                   )}
 

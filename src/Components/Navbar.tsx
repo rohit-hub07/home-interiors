@@ -38,9 +38,6 @@ export default function Navbar() {
               <Link href="/interiors/bathroom" className="text-gray-700 hover:text-orange-600 font-medium text-base transition-colors">
                 Bathrooms
               </Link>
-              <Link href="/interiors/gallery" className="text-gray-700 hover:text-orange-600 font-medium text-base transition-colors">
-                Gallery
-              </Link>
             </div>
 
             {/* Desktop Actions */}
