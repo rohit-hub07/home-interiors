@@ -39,7 +39,7 @@ yarn install
 pnpm install
 ```
 
-3. Create a `.env.local` file in the root directory (see Environment Variables section below)
+3. Create a `.env` file in the root directory (see Environment Variables section below)
 
 4. Run the development server:
 
@@ -55,7 +55,7 @@ pnpm dev
 
 ## Environment Variables
 
-Create a `.env.local` file in the root directory with the following variables:
+Create a `.env` file in the root directory with the following variables:
 
 ```env
 # MongoDB Connection
