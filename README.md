@@ -61,7 +61,7 @@ Create a `.env` file in the root directory with the following variables:
 # MongoDB Connection
 DB_CONNECTION_STRING=mongodb://localhost:27017/homedesign
 # or for MongoDB Atlas:
-# DB_CONNECTION_STRING=mongodb+srv://username:password@cluster.mongodb.net/homedesign
+# DB_CONNECTION_STRING=your connection string
 
 # JWT Secret (use a strong random string)
 JWT_SECRET=your_jwt_secret_key_here
