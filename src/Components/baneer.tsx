@@ -95,7 +95,7 @@ const HalfOverlayImage: React.FC = () => {
         </div>
 
         {/* Right Content Section with cream background */}
-        <div className="w-full md:w-1/2 bg-[#F5EFE6] flex items-center justify-center p-4 sm:p-6 md:p-12 relative min-h-[400px]">
+        <div className="w-full md:w-1/2 bg-[#F5EFE6] flex items-center justify-center p-4 sm:p-6 md:p-12 relative min-h-100">
           {/* Edit Button - Only visible to logged in users - Moved outside inner div */}
           {userId && !isEditing && (
             <button
