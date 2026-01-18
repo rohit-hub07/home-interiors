@@ -34,7 +34,7 @@ const bannerSchema = new Schema({
   buttonText: {
     type: String,
     required: true,
-    default: "Book A FREE\nConsultation"
+    default: "Book A FREE\nConsultation 👋" 
   },
   whatsappNumber: {
     type: String,
